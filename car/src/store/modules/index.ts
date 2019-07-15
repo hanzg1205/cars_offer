@@ -1,6 +1,7 @@
-import { getBrandListData } from "@/api";
+import { getBrandListData , getData } from "@/api";
 const state={
-    brandList: []
+    brandList: [],
+    listData:[]
 };
 const actions={
     async getBrandList({commit}:any,params:any){
@@ -21,11 +22,20 @@ const actions={
         }
         console.log('obj...',obj);
         commit('updateBrancList',obj)
-    }
+    },
+    async getList({commit}:any,action:any){
+        console.log('action...',action)
+        let data = await getData(action)
+        console.log('data',data)
+        commit('getListData',data)
+    }    
 };
 const mutations={
     updateBrancList(state:any,params:any){
         state.brandList = params
+    },
+    getListData(state:any,params:any){
+        state.listData=params
     }
 };
 export default{
