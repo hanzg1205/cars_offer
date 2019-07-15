@@ -40,7 +40,7 @@ export default Vue.extend({
     }),
     clcikItem(item:any){
       console.log(item.MasterID)
-      this.flag=!this.flag
+      this.flag=true
       this.getItemData(item.MasterID)
     }
   },
@@ -108,7 +108,7 @@ export default Vue.extend({
   }
   .childrenList{
     transform: translateX(0%);
-    transition-duration: 3s;
+    transition-duration: 1s;
   }
 </style>
 
