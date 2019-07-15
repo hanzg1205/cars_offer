@@ -11,14 +11,14 @@
         </ul>
       </div>
     </div>
-    <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
-    <!-- <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/> -->
+    <Floor :brandList="brandList"></Floor>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions, mapState } from 'vuex';
+import Floor from "@/components/Floor.vue";
 
 export default Vue.extend({
   created(){
@@ -33,6 +33,9 @@ export default Vue.extend({
     ...mapState({
       brandList: (state:any) => state.index.brandList
     })
+  },
+  components: {
+    Floor
   }
 })
 </script>
