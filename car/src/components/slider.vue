@@ -4,7 +4,7 @@
           <p class="title">{{item.GroupName}}</p>
           <div class="list_item" v-for="(Gitem,Gindex) in item.GroupList" :key="Gindex">
               <dl>
-                  <dt><img :src="Gitem.Picture" alt=""></dt>
+                  <dt><img v-lazy="Gitem.Picture" :src="Gitem.Picture" alt=""></dt>
                   <dd>
                       <h3>{{Gitem.AliasName}}</h3>
                       <p class="nameTitle">{{Gitem.DealerPrice}}</p>
@@ -59,32 +59,31 @@ export default Vue.extend({
         background: #eee;
         line-height: .35rem;
         padding-left: 0.15rem;
+        font-size: 0.14rem;
     }
     .list_item{
         width: 100%;
         height: .7rem;
-        display: flex;
-        flex-direction:column;
-        align-items: center;
         dl{
             width: 100%;
+            height:100%;
             display: flex;
             box-sizing: border-box;
             align-items: center;
             border-bottom: 1px solid #ddd;
             dd h3{
                 font-weight: normal;
-                // margin-top: .1rem;
                 font-size: 0.17rem;
             };
             dd .nameTitle{
                 font-size: 0.14rem;
                 color:#FF0000;
+                margin-top:0.1rem;
             }
             dt{
                 width: 0.9rem;
                 height: 0.6rem;
-                padding: 0.1rem;
+                margin:0 0.1rem;
                 img{
                     width: 100%;
                     height: 100%;

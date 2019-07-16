@@ -1,17 +1,7 @@
 <template>
   <div class="home">
-    <div class="car-brand">
-      <div v-for="(item,key,index) in brandList" :key="index" :id="key">
-        <p>{{key}}</p>
-        <ul>
-          <li v-for="file in item" :key="file.MasterID" @click="clcikItem(file)">
-            <img :src="file.CoverPhoto" alt="">
-            <span>{{file.Name}}</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <Floor :brandList="brandList"></Floor>
+    <BrandList :brandList="brandList" :clcikItem="clcikItem"/>
+    <Floor :letterList="letterList"></Floor>
     <Slider :class="flag?'childrenList':'children'" :dataList="getLists" />
   </div>
 </template>
@@ -19,9 +9,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Slider from '@/components/slider.vue'; // @ is an alias to /src
 import { mapActions, mapState } from 'vuex';
+import Slider from '@/components/slider.vue'; // @ is an alias to /src
 import Floor from "@/components/Floor.vue";
+import BrandList from "@/components/BrandList.vue";
 
 export default Vue.extend({
   data(){
@@ -39,7 +30,6 @@ export default Vue.extend({
         getItemData:'index/getList'
     }),
     clcikItem(item:any){
-      console.log(item.MasterID)
       this.flag=true
       this.getItemData(item.MasterID)
     }
@@ -47,51 +37,25 @@ export default Vue.extend({
   computed: {
     ...mapState({
       brandList: (state:any) => state.index.brandList,
+      letterList: (state:any) => state.index.letterList,
       getLists:(state:any)=>state.index.listData
     })
   },
   components: {
     Floor,
-    Slider
+    Slider,
+    BrandList
   }
 })
 </script>
 
 <style lang="scss" scoped>
   .home{
-    .car-brand{
-      p{
-        font-size: .14rem;
-        line-height: .3rem;
-        background: #f4f4f4;
-        padding-left: .15rem;
-        color: #aaa;
-      }
-      ul{
-        margin: 0 0.15rem;
-        li{
-          height: 0.5rem;
-          box-sizing: border-box;
-          border-bottom: 1px solid #ddd;
-          align-items: center;
-          display: flex;
-          img{
-            width:0.4rem;
-            height:0.4rem;
-          }
-          span{
-            font-size: .16rem;
-            margin-left: .2rem;
-          }  
-          &:last-child{
-            border:0;
-          }       
-        }
-      }
-    }
+    width:100%;
+    height: 100%;
   }
   .children ,  .childrenList{
-    width: 80%;
+    width: 75%;
     height: 100%;
     transform: translateX(100%);
     transition-duration: 3s;
