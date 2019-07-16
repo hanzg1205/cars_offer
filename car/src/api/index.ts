@@ -6,3 +6,10 @@ export function getBrandListData(params:any){
         method: 'get'
     })
 }
+export function getData(params:any){
+    console.log('12345',params)
+     return request({
+         url:`http://baojia.chelun.com/v2-car-getMakeListByMasterBrandId.html?MasterID=${params}&_1563193329867`,
+         method:'GET'
+     })
+}
