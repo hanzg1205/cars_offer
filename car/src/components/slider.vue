@@ -2,14 +2,14 @@
   <div class="wrap">
       <div class="list" v-for="(item,index) in dataList.data" :key="index">
           <p class="title">{{item.GroupName}}</p>
-          <div class="list_item" v-for="(Gitem,Gindex) in item.GroupList" :key="Gindex">
-              <dl>
-                  <dt><img :src="Gitem.Picture" alt=""></dt>
-                  <dd>
-                      <h3>{{Gitem.AliasName}}</h3>
-                      <p class="nameTitle">{{Gitem.DealerPrice}}</p>
-                  </dd>
-              </dl>
+          <div class="list_item" v-for="(Gitem,Gindex) in item.GroupList" :key="Gindex" @click="clcikItem(Gitem)">
+                <dl>
+                    <dt><img :src="Gitem.Picture" alt=""></dt>
+                    <dd>
+                        <h3>{{Gitem.AliasName}}</h3>
+                        <p class="nameTitle">{{Gitem.DealerPrice}}</p>
+                    </dd>
+                </dl>
           </div>
       </div>
   </div>
@@ -18,20 +18,17 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapState ,mapActions } from 'vuex'
-// import { Component, Prop, Vue } from 'vue-property-decorator';
-
-// @Component
-export default Vue.extend({
+export default Vue.extend ({
     props:['dataList'],
     mounted(){
         console.log(this)
     },
     methods:{
-       
-    },
-    computed:{
-        
-    },
+        clcikItem(item:any):void{
+            let { Adetail }:any = this
+            this.$router.push({path:'/about',query:{id:item.SerialID}})
+        }
+    }
 })
 </script>
 
