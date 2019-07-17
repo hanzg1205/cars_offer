@@ -4,23 +4,28 @@
       <img :src="DetailData.CoverPhoto" alt="">
     </div>
     <div class="content">
-      <div class="top_One">
+      <div class="top_One" v-if="DetailData.market_attribute">
         <div class="content_top">
           <p>{{DetailData.market_attribute.dealer_price}}</p>
           <span>指导价{{DetailData.market_attribute.official_refer_price}}</span>
         </div>
-        <li>询问低价</li>
+        <li @click="goQuotation(cid.car_id)">询问低价</li>
       </div>
+      <div class="list">
+        <p v-for="(item,index) in list" :key="index" @click="clcikIndex(index)" :class="index==ind?'active':''">{{item}}</p>
+      </div>
+        <Item :data="getAllData" />
     </div>
-    <div class="fixed">
-      <p>询问低价</p>
+    <div class="fixed"  @click="goQuotation(cid.car_id)">
+      <p class="fixed_text">询问低价</p>
       <p>本地经销商为你报价</p>
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 import Vue from 'vue'
 import { mapState , mapActions , mapMutations } from 'vuex'
+import Item from '@/components/item.vue'
 export default Vue.extend({
     data(){
       return {
@@ -31,7 +36,6 @@ export default Vue.extend({
       let { Adetail , indx } = this
        Adetail(this.$route.query.id)
        indx(this.ind)
-       console.log(this.DetailData)
     },
     methods:{
         ...mapActions({
@@ -40,18 +44,25 @@ export default Vue.extend({
         ...mapMutations({
           indx:'index/getIndex'
         }),
-        clcikIndex(index){
+        clcikIndex(index:any){
           let { indx } = this
           this.ind=index
           indx(this.ind)
+        },
+        goQuotation(id:any){
+          this.$router.push({path:'/quotation',query:{id:id}})
         }
     },
     computed:{
       ...mapState({
-        DetailData:state=>state.index.DetailData,
-        list:state=>state.index.list,
-        getAllData:state=>state.index.getAllData
+        DetailData:(state:any)=>state.index.DetailData,
+        list:(state:any)=>state.index.list,
+        getAllData:(state:any)=>state.index.getAllData,
+        cid:(state:any)=>state.index.cid
       })
+    },
+    components:{
+      Item
     }
 })
 </script>
@@ -80,28 +91,31 @@ export default Vue.extend({
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: .4rem .15rem;
+      padding: .32rem .1rem;
       background: #fff;
-      p{
+         p{
         font-size: .2rem;
         color:#FF0000;
-      }
-      span{
-        color:#ccc;
-      }
+        font-weight:500;
+        }
+        span{
+          color:#ccc;
+          font-size: .08rem;
+        }
       li{
         width: 50%;
-        padding: .09rem;
+        padding: .1rem;
         background: #00afff;
         color:#fff;
         text-align: center;
         border-radius: .05rem;
+        font-size: .16rem
       }
     }
     .list{
-      border-top: .15rem solid #f4f4f4;
+      border-top: .08rem solid #f4f4f4;
       width: 100%;
-      font-size: .15rem;
+      font-size: .16rem;
       height: .57rem; 
       align-items: center;
       display: flex;
@@ -111,47 +125,10 @@ export default Vue.extend({
       }
     }
   }
-  .list_item{
+  .list_box{
     width: 100%;
     height: auto;
-    background: #fff;
-    p{
-      width: 100%;
-      background: #eee;
-      padding: .08rem;
-    }
-    .text_box{
-      width: 100%;
-      height: auto;
-      display: flex;
-      flex-direction: column;
-      padding: .1rem .1rem;
-      .text_top,.text_bottom{
-        p{
-          font-size: .15rem;
-          background: #fff;
-        }
-        .title{
-          color:#ccc;
-          list-style: none;
-        }
-      }
-      .text_bottom{
-        text-align: right;
-        .pirce{
-          color:#FF0000;
-          margin-left: .1rem;
-        }
-      }
-      .buttom{
-        width: 100%;
-        padding: .05rem 0;
-        text-align: center;
-        border-top:solid #ccc .01rem;
-        font-size: .18rem;
-        color:#00afff;
-      }
-    }
+    border-bottom:solid #ccc .5rem;
   }
   .fixed{
     width: 100%;
@@ -163,6 +140,7 @@ export default Vue.extend({
     text-align: center;
    :first-child{
      margin-top: .12rem;
+     font-size: .18rem;
    }
   }
 }

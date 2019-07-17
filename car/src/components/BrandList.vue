@@ -1,6 +1,6 @@
 <template>
-    <div class="wrapper" ref='father'>
-        <div class="car-brand" @onscroll='scroll' >
+    <div class="wrapper" ref='scroll'>
+        <div class="car-brand" >
             <div v-for="(item,key,index) in brandList" :key="index" :id="key" :ref="key">
                 <p>{{key}}</p>
                 <ul>
@@ -24,24 +24,25 @@ export default Vue.extend({
         clcikItem: {
             type: Function,
             default: ()=>{}
+        },
+        current: {
+            type: String,
+            value: ''
         }
     },
-    methods:{
-        scroll(){
-
-            console.log(this.$refs)
-        }
-    },
-    created(){
-        
-        this.$nextTick(()=>{
-            this.$bus.$on("props",(data:any)=>{
-                this.$refs.father.scrollTop = this.$refs[data][0].offsetTop
-            })
-        })
-    },
-    mounted(){
-
+    // created(){      
+    //     this.$nextTick(()=>{
+    //         this.$bus.$on("props",(data:any)=>{
+    //             this.$refs.father.scrollTop = this.$refs[data][0].offsetTop
+    //         })
+    //     })
+    // },
+    watch: {
+        current(val){
+            if(val){
+                this.$refs.scroll.scrollTop = this.$refs[val][0].offsetTop
+            }
+        } 
     }
 })
 </script>

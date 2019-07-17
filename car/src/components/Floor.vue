@@ -15,7 +15,6 @@
 export default {
     data(){
         return {
-            current: '',
             isTouch: false
         }
     },
@@ -23,15 +22,18 @@ export default {
         letterList: {
             type: Array,
             value: []
+        },
+        current: {
+            type: String,
+            value: ''
         }
     },
     methods: {    
         touchStart(e: Event): void{      
             if(e.target.tagName === 'LI'){
                 this.isTouch = true;
-                // console.log("000",e.currentTarget)
-                this.current = e.target.innerText;
-                this.$bus.$emit("props",e.target.innerText);
+                // this.$bus.$emit("props",e.target.innerText);
+                this.$emit('update:current',e.target.innerText);
             }
         },
         touchMove(e:Event): void{
@@ -40,7 +42,6 @@ export default {
             let letterHeight = 0.22 * window.innerWidth / 375*100;
             let letterOffsetTop = (window.innerHeight - letterHeight * letterList.length) / 2;
             let letterIndex = Math.floor((pageY-letterOffsetTop)/letterHeight);
-            // console.log("letter...",e.currentTarget);
             // 处理上边界
             if (letterIndex < 0){
                 letterIndex = 0;
@@ -49,13 +50,13 @@ export default {
             if (letterIndex > letterList.length-1){
                 letterIndex = letterList.length-1;
             }
-            this.current = letterList[letterIndex];
-            this.$bus.$emit("props",letterList[letterIndex]);
-            // window.location.href="#"+letterList[letterIndex];
+            // this.current = letterList[letterIndex];
+            // this.$bus.$emit("props",letterList[letterIndex]);
+            this.$emit('update:current',letterList[letterIndex]);
         },
         touchEnd(e:Event): void{
             this.isTouch = false;
-            this.current = ''; 
+            this.$emit('update:current','');
         }
     }
     

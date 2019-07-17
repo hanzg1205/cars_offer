@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <BrandList :brandList="brandList" :clcikItem="clcikItem"/>
-    <Floor :letterList="letterList"></Floor>
+    <BrandList :brandList="brandList" :clcikItem="clcikItem" :current.sync="current"/>
+    <Floor :letterList="letterList" :current.sync="current"></Floor>
     <Slider :class="flag?'childrenList':'children'" :dataList="getLists" />
   </div>
 </template>
@@ -18,6 +18,7 @@ export default Vue.extend({
   data(){
     return {
       flag:false,
+      current: ''
     }
   },
   created(){
