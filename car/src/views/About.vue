@@ -1,7 +1,7 @@
 <template>
   <div class="wrap">
     <div class="top">
-      <img :src="DetailData.CoverPhoto" alt="">
+      <img :src="DetailData.CoverPhoto" alt="" @click="goImage(DetailData.SerialID)">
     </div>
     <div class="content">
       <div class="top_One" v-if="DetailData.market_attribute">
@@ -63,6 +63,9 @@ export default Vue.extend({
         },
         goQuotation(id:any){
           this.$router.push({path:'/quotation',query:{id:id}})
+        },
+        goImage(SerialID:any){
+          this.$router.push({path:'/image',query:{SerialID}})
         }
     },
     computed:{

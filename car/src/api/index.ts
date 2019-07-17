@@ -28,3 +28,28 @@ export function getDealer(params:any){
         params: params
     })
 }
+
+// 获取省份
+export function getProvince(params:any){
+    return request({
+        url: 'v1-city-alllist.html',
+        method: 'get'
+    })
+}
+// 市
+export function getCity(params:any){
+    return request({
+        url: 'v1-city-alllist.html',
+        method: 'get',
+        params
+    })
+}
+
+// 获取图片
+export function getImage(params:any){
+    return request({
+        url: 'v2-car-getImageList.html',
+        method: 'get',
+        params
+    })
+}

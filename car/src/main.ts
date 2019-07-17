@@ -12,8 +12,8 @@ Vue.config.productionTip = false
 Vue.prototype.$bus =new Vue()
 Vue.use(VueLazyload, {
   preLoad: 1.3,
-  error: 'favicon.ico',
-  loading: 'favicon.ico',
+  error: 'img/timg.gif',
+  loading: 'img/timg.gif',
   attempt: 1
 })
 

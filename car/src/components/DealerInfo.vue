@@ -2,7 +2,7 @@
     <div class="dealer-info">
         <p class="tip">选择报价经销商</p>
         <ul>
-            <li class="" v-for="(item,index) in dealerList" :key="index">
+            <li :class="item.flag?'active':''" v-for="(item,index) in dealerList" :key="index" @click="checkTab(item)">
                 <p class="top">
                     <span>{{item.dealerShortName}}</span>
                     <span>{{item.vendorPrice}}万</span>
@@ -12,52 +12,27 @@
                     <span>售{{item.saleRange}}</span>
                 </p>
             </li>
-            <li class="active">
-                <p class="top">
-                    <span>运通嘉奥</span>
-                    <span>22万</span>
-                </p>
-                <p class="desc">
-                    <span>北京市顺义区赵全营镇牛板路板桥段43号 运通京承国际汽车广场内</span>
-                    <span>售全国</span>
-                </p>
-            </li>
-            <li class="">
-                <p class="top">
-                    <span>运通嘉奥</span>
-                    <span>22万</span>
-                </p>
-                <p class="desc">
-                    <span>北京市顺义区赵全营镇牛板路板桥段43号 运通京承国际汽车广场内</span>
-                    <span>售全国</span>
-                </p>
-            </li>
-            <li class="">
-                <p class="top">
-                    <span>运通嘉奥</span>
-                    <span>22万</span>
-                </p>
-                <p class="desc">
-                    <span>北京市顺义区赵全营镇牛板路板桥段43号 运通京承国际汽车广场内</span>
-                    <span>售全国</span>
-                </p>
-            </li>
         </ul>
     </div>
 </template>
 
-<script>
+<script lang="ts">
 
 export default {
     data(){
         return {
-
+            idx: 0
         }
     },
     props: {
         dealerList: {
             type: Array,
             default: []
+        }
+    },
+    methods: {
+        checkTab(item:any){
+            item.flag = !item.flag;
         }
     }
 }
@@ -92,7 +67,7 @@ export default {
                     position: absolute;
                     left: .02rem;
                     top: 50%;
-                    transform: translate3d(0,-50%,0);    
+                    transform: translateY(-50%);    
                 }
                 &.active:before{
                     background: #3aacff;
@@ -104,7 +79,7 @@ export default {
                     padding-top: .085rem;
                     padding-right: .05rem;
                     border: 2px solid #fff;
-                    transform: rotate(40deg) translate3d(0,-50%,0);
+                    transform: rotate(40deg) translateY(-50%);
                     position: absolute;
                     left: .03rem;
                     border-left: none;

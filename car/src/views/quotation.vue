@@ -25,7 +25,7 @@
                     </li>
                     <li>
                         <span>城市</span>
-                        <span>北京</span>
+                        <span @click="goAddress">{{address}}</span>
                     </li>
                 </ul>
                 <div class="quotation-btn">
@@ -33,6 +33,7 @@
                 </div>
             </div>
             <DealerInfo :dealerList="dealerList"/>
+            <Address v-if="addressFlag" :getAddress="getAddress"/>
         </div>
     </div>
 </template>
@@ -40,20 +41,39 @@
 <script lang="ts">
 import Vue from 'vue';
 import DealerInfo from "@/components/DealerInfo.vue";
+import Address from "@/components/Address.vue";
 import { mapActions, mapState } from 'vuex';
 export default Vue.extend({
     data(){
         return {
-
+            addressFlag: false,
+            address: '北京'
         }
     },
     components: {
-        DealerInfo
+        DealerInfo,
+        Address
     },
     methods: {
         ...mapActions({
             getQuotation: 'quotation/getDealer'
-        })
+        }),
+        goAddress(){
+           this.addressFlag = true; 
+        },
+        getData(params:Object){
+            this.getQuotation(params);
+        },
+        getAddress(params:Object){
+            this.addressFlag = false;
+            console.log('params...000',params);
+            this.address = params.CityName;
+            let car_id = this.$route.query.id;
+            this.getData({
+                carId: car_id,
+                cityId: params.CityID
+            })
+        }
     },
     computed: {
         ...mapState({
@@ -63,10 +83,10 @@ export default Vue.extend({
     },
     created(){
         let car_id = this.$route.query.id;
-        this.getQuotation({
+        this.getData({
             carId: car_id,
             cityId: 201
-        });
+        })
     }
 })
 </script>
@@ -135,6 +155,7 @@ export default Vue.extend({
                             font-size: .16rem;
                             line-height: 1.4;
                             color: #333;
+                            padding-right: 0.1rem;
                         }
                     }
                 }
