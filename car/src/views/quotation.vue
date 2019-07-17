@@ -62,8 +62,9 @@ export default Vue.extend({
         })
     },
     created(){
+        let car_id = this.$route.query.id;
         this.getQuotation({
-            carId: 131316,
+            carId: car_id,
             cityId: 201
         });
     }

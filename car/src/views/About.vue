@@ -4,12 +4,12 @@
       <img :src="DetailData.CoverPhoto" alt="">
     </div>
     <div class="content">
-      <div class="top_One">
+      <div class="top_One" v-if="DetailData.market_attribute">
         <div class="content_top">
           <p>{{DetailData.market_attribute.dealer_price}}</p>
           <span>指导价{{DetailData.market_attribute.official_refer_price}}</span>
         </div>
-        <li>询问低价</li>
+        <li @click="goQuotation(getAllData[0].car_id)">询问低价</li>
       </div>
       <div class="list">
         <p v-for="(item,index) in list" :key="index" @click="clcikIndex(index)" :class="index==ind?'active':''">{{item}}</p>
@@ -18,12 +18,12 @@
         <p>{{item.exhaust_str}}\{{item.horse_power}}W {{item.inhale_type}}</p>
         <div class="text_box">
           <div class="text_top">
-            <p>2019款 xDrive 25i 豪华套装</p>
-            <li>184马力8档手自一体</li>
+            <p>{{item.market_attribute.year}}款 {{item.car_name}}</p>
+            <li>{{item.horse_power}}马力{{item.gear_num}}档{{item.trans_type}}</li>
           </div>
           <div class="text_bottom">
-            <p><span>指导价</span><span class="pirce">32.8万</span></p>
-            <p class="buttom">询问低价</p>
+            <p><span>指导价{{item.market_attribute.dealer_price_max}}</span><span class="pirce">{{item.market_attribute.dealer_price_min}}万</span></p>
+            <p class="buttom" @click="goQuotation(item.car_id)">询问低价</p>
           </div>
         </div>
       </div>
@@ -34,7 +34,7 @@
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 import Vue from 'vue'
 import { mapState , mapActions , mapMutations } from 'vuex'
 export default Vue.extend({
@@ -60,6 +60,9 @@ export default Vue.extend({
           let { indx } = this
           this.ind=index
           indx(this.ind)
+        },
+        goQuotation(id){
+          this.$router.push({path:'/quotation',query:{id:id}})
         }
     },
     computed:{
