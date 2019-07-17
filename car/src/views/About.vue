@@ -11,22 +11,6 @@
         </div>
         <li>询问低价</li>
       </div>
-      <div class="list">
-        <p v-for="(item,index) in list" :key="index" @click="clcikIndex(index)" :class="index==ind?'active':''">{{item}}</p>
-      </div>
-      <div class="list_item" v-for="(item,index) in getAllData" :key="index">
-        <p>{{item.exhaust_str}}\{{item.horse_power}}W {{item.inhale_type}}</p>
-        <div class="text_box">
-          <div class="text_top">
-            <p>2019款 xDrive 25i 豪华套装</p>
-            <p class="title">184马力8档手自一体</p>
-          </div>
-          <div class="text_bottom">
-            <p><span>指导价</span><span class="pirce">32.8万</span></p>
-            <p class="buttom">询问低价</p>
-          </div>
-        </div>
-      </div>
     </div>
     <div class="fixed">
       <p>询问低价</p>
@@ -171,12 +155,11 @@ export default Vue.extend({
   }
   .fixed{
     width: 100%;
-    height: .6rem;
+    height: .5rem;
     background: #00afff;
     color:#fff;
     position: fixed;
     bottom:0;
-    left:0;
     text-align: center;
    :first-child{
      margin-top: .12rem;
