@@ -56,20 +56,20 @@ export default Vue.extend({
         ...mapMutations({
           indx:'index/getIndex'
         }),
-        clcikIndex(index){
+        clcikIndex(index:any){
           let { indx } = this
           this.ind=index
           indx(this.ind)
         },
-        goQuotation(id){
+        goQuotation(id:any){
           this.$router.push({path:'/quotation',query:{id:id}})
         }
     },
     computed:{
       ...mapState({
-        DetailData:state=>state.index.DetailData,
-        list:state=>state.index.list,
-        getAllData:state=>state.index.getAllData
+        DetailData:(state:any)=>state.index.DetailData,
+        list:(state:any)=>state.index.list,
+        getAllData:(state:any)=>state.index.getAllData
       })
     }
 })
@@ -137,21 +137,22 @@ export default Vue.extend({
     p{
       width: 100%;
       background: #eee;
-      padding: .02rem ;
+      padding: .08rem;
     }
     .text_box{
       width: 100%;
       height: auto;
       display: flex;
       flex-direction: column;
-      padding: .08rem .1rem;
+      padding: .1rem .1rem;
       .text_top,.text_bottom{
         p{
           font-size: .15rem;
           background: #fff;
         }
-        li{
+        .title{
           color:#ccc;
+          list-style: none;
         }
       }
       .text_bottom{
