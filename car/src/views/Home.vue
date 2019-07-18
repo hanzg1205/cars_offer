@@ -66,5 +66,3 @@ export default Vue.extend({
     transition-duration: 1s;
   }
 </style>
-
-

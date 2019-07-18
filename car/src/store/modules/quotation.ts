@@ -39,6 +39,7 @@ const mutations={
     },
     updateDeler(state:any, payload:Array<Object>){
         state.dealerList = payload;
+        console.log(state.dealerList)
     },
     // 省份
     updateProvince(state:any, payload:Array<Object>){
