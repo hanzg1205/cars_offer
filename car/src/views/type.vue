@@ -1,25 +1,22 @@
 <template>
-    <div class="color">
+    <div class="type">
         <p>全部车款</p>
         <div class="color-box">
             <p class="c-type">
-                <span class="active">2019</span>
-                <span>2019</span>
+                <span class="active" v-for="item in yearList" :key="item">{{item}}</span>
             </p>
-            <div class="list">
-                <p>1.5L/96kW 自然吸气</p>
-                <ul>
-                    <li>
-                        <span></span>
-                        脑分页
-                    </li>
-                    <li>
-                        <span></span>
-                        脑分页
-                    </li>
-                    <li>
-                        <span></span>
-                        脑分页
+            <div class="list" v-for="(item,key,index) in getAllData" :key="index">
+                <p>{{key}}</p>
+                <ul >
+                    <li v-for="(val) in item" :key="val.car_id">
+                        <P class="top">
+                            <span>{{val.market_attribute.year}}款{{val.car_name}}</span>
+                            <span>{{val.market_attribute.dealer_price_min}}万起</span>
+                        </P>
+                        <p class="bom">
+                            <span>{{val.horse_power}}马力{{val.gear_num}}档{{val.trans_type}}</span>
+                            <span>指导价 {{val.market_attribute.dealer_price_max}}万</span>
+                        </p>
                     </li>
                 </ul>
             </div>           
@@ -28,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { mapActions } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
     data(){
@@ -36,26 +33,28 @@ export default {
 
         }
     },
-    methods: {
-        ...mapActions({
-            getColor: 'image/getColor'
+    computed: {
+        ...mapState({
+            getAllData: (state:any)=>state.index.getAllData,
+            yearList: (state:any)=>state.index.list
         })
     },
-    computed: {
-
+    watch: {
+        getAllData(val){
+            console.log("val00...",val)
+        }
     },
     created(){
-        let SerialID = this.$route.query.SerialID
-        this.getColor({SerialID});
+        console.log("0123456")
     }
 }
 </script>
 <style scoped  lang="scss">
-    .color{
+    .type{
         width: 100%;
         height:100%;
         background: #f4f4f4;
-        overflow: hidden;
+        overflow-y: scroll;
         >p{
             margin: .08rem 0;
             font-size: .17rem;
@@ -82,37 +81,52 @@ export default {
                 }
             }
             .list{
-                p{
+                >p{
                     height: 0.3rem;
                     line-height: 0.3rem; 
                     padding-left: 0.15rem;
+                    font-size: 0.12rem;
                 }
                 ul{
-                    padding: 0 .1rem;
-                    overflow: hidden;
                     background: #fff;
-                    display: flex;
-                    flex-wrap: wrap;
-                    justify-content: space-between;
-                    padding: 0 0.15rem;
-                    
                     li{
-                        width: 48%;
-                        font-size: .16rem;
-                        line-height: .34rem;
-                        border: 1px solid #3aacff;
+                        margin: 0 .1rem;
+                        padding: .14rem .03rem;
+                        border-bottom: 1px solid #eee;
                         box-sizing: border-box;
-                        margin: .1rem 0;
-                        border-radius: .03rem;
-                        span{
-                            display: inline-block;
-                            width: .2rem;
-                            height: .2rem;
-                            margin-left: .1rem;
-                            vertical-align: -12%;
-                            background: #fe9210;
-                            box-sizing: border-box;
-                            border: 1px solid #818181;
+                        height: 0.65rem;
+                        line-height: 1; 
+                        p{
+                            font-size: .15rem;
+                            &.bom{
+                                padding-top: .08rem;
+                                font-size: .12rem;
+                                span{
+                                    &:nth-child(1){
+                                        color: #b3b3b3; 
+                                    } 
+                                    &:nth-child(2){
+                                        color: #818181;
+                                        float: right;
+                                    } 
+                                }
+                            }
+                            &.top{
+                                span{
+                                    &:nth-child(1){
+                                        width: 2.5rem;
+                                        display: inline-block;
+                                        text-overflow: ellipsis;
+                                        overflow: hidden;
+                                        white-space: nowrap;  
+                                    } 
+                                    &:nth-child(2){
+                                        float: right;
+                                        color: red;
+                                        font-size: .13rem;
+                                    }  
+                                }
+                            }
                         }
                     }
                 }
