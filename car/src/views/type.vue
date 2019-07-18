@@ -1,14 +1,14 @@
 <template>
     <div class="type">
-        <p>全部车款</p>
+        <p @click="clickRoute('全部车款',cid,'all')">全部车款</p>
         <div class="color-box">
             <p class="c-type">
-                <span class="active" v-for="item in yearList" :key="item">{{item}}</span>
+                <span  v-for="(item,index) in yearList" :key="item" @click="tab(index+1)" :class="index+1==ind?'active':''">{{item}}</span>
             </p>
             <div class="list" v-for="(item,key,index) in getAllData" :key="index">
                 <p>{{key}}</p>
                 <ul >
-                    <li v-for="(val) in item" :key="val.car_id">
+                    <li v-for="(val) in item" :key="val.car_id" @click="clickRoute(val.market_attribute.year+'款'+val.car_name,val,'item')">
                         <P class="top">
                             <span>{{val.market_attribute.year}}款{{val.car_name}}</span>
                             <span>{{val.market_attribute.dealer_price_min}}万起</span>
@@ -25,18 +25,19 @@
 </template>
 
 <script lang="ts">
-import { mapState } from 'vuex';
+import { mapState , mapMutations, mapActions} from 'vuex';
 
 export default {
     data(){
         return {
-
+            ind:1
         }
     },
     computed: {
         ...mapState({
             getAllData: (state:any)=>state.index.getAllData,
-            yearList: (state:any)=>state.index.list
+            yearList: (state:any)=>state.index.list.slice(1),
+            cid:(state:any)=>state.index.cid
         })
     },
     watch: {
@@ -46,6 +47,31 @@ export default {
     },
     created(){
         console.log("0123456")
+        this.indx(this.ind)
+    },
+    methods:{
+        ...mapActions({
+            getItemType:'image/getItemType'
+        }),
+        ...mapMutations({
+            indx:'index/getIndex'
+        }),
+        tab(index){
+            console.log(index)
+            this.ind=index
+            this.indx(index)
+        },
+        clickRoute(name:any,item:any,type:any){
+                sessionStorage.setItem('data',JSON.stringify({name:name,data:item}))
+                let data = JSON.parse(sessionStorage.getItem('data'))
+                let SerialID = this.$route.query.SerialID
+                this.$router.push({path:'/image',query:{SerialID}})
+            if(type=='item'){
+                this.getItemType({SerialID:this.$route.query.SerialID,CarID:data.data.car_id})
+            }else{
+                this.getItemType({SerialID:this.$route.query.SerialID})
+            }
+        }
     }
 }
 </script>

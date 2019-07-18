@@ -5,11 +5,11 @@
                 <span>颜色</span>
             </p>
             <p @click="goType">
-                <span>车款</span>
+                <span>{{car_name?car_name:data}}</span>
             </p>
         </div>
-        <div class="img-default" >
-            <ul v-for="(item,index) in imgTypeList" :key="index">
+        <div class="img-default" v-show="imgTypeList">
+            <ul v-for="(item,index) in imgTypeList" :key="index" >
                 <li v-for="(val,index) in item.List" :index="index" :key="val.Id">
                     <img :style="{'backgroundImage': 'url('+val.Url.replace(/{\d}/,val.LowSize)+')'}">
                     <div v-if="index===0">
@@ -18,6 +18,9 @@
                     </div>
                 </li>
             </ul>
+        </div>
+        <div class="img">
+            <img src="http://h5.chelun.com/2017/official/img/no-img.png" alt="">
         </div>
     </div>
 </template>
@@ -28,7 +31,7 @@ import { mapActions, mapState } from 'vuex';
 export default {
     data(){
         return {
-
+            car_name:'车款'
         }
     },
     methods: {
@@ -40,19 +43,25 @@ export default {
             this.$router.push({path:'/color',query:{SerialID}})
         },
         goType(){
-            this.$router.push({path:'/type'})
+            let SerialID = this.$route.query.SerialID
+            console.log(SerialID)
+            this.$router.push({path:'/type',query:{SerialID}})
         }
     },
     computed: {
         ...mapState({
              imgTypeList: (state:any) => state.image.imgTypeList
-        })  
+        }) ,
+        data(){
+            let data = JSON.parse(sessionStorage.getItem('data'))
+            this.car_name=data.name
+        }
     },
     created(){
-        // console.log('....', this.$route.query.SerialID)
         this.getImage({
             SerialID: this.$route.query.SerialID
         });
+        // console.log('....', this.$route.query.SerialID)
     }
 }
 </script>
@@ -149,7 +158,17 @@ export default {
                     }
                 }
             }
-            
+        }
+        .img{
+            width:30%;
+            height: 20%;
+            margin: 0 auto;
+            line-height: 50%;
+            img{
+                width: 100%;
+                height: 100%;
+                margin-top: 50%;
+            }
         }
     }
 </style>
