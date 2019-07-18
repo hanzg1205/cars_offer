@@ -4,6 +4,8 @@ import Home from './views/Home.vue'
 import Detail from './views/About.vue'
 import Quotation from './views/quotation.vue'
 import Image from './views/image.vue'
+import Color from './views/color.vue'
+import type from './views/type.vue'
 
 Vue.use(Router)
 
@@ -34,6 +36,16 @@ export default new Router({
       path: '/image',
       name: 'image',
       component: Image
+    },
+    {
+      path: '/color',
+      name: 'color',
+      component: Color
+    },
+    {
+      path: '/type',
+      name: 'type',
+      component: type
     }
   ]
 })

@@ -1,17 +1,17 @@
 <template>
     <div class="car-img">
         <div class="tit">
-            <p>
+            <p @click="goColor">
                 <span>颜色</span>
             </p>
-            <p>
+            <p @click="goType">
                 <span>车款</span>
             </p>
         </div>
         <div class="img-default" >
             <ul v-for="(item,index) in imgTypeList" :key="index">
                 <li v-for="(val,index) in item.List" :index="index" :key="val.Id">
-                    <img :src="val.Url.replace(/{\d}/,val.LowSize)" alt="">
+                    <img :style="{'backgroundImage': 'url('+val.Url.replace(/{\d}/,val.LowSize)+')'}">
                     <div v-if="index===0">
                         <p>{{item.Name}}</p>
                         <p>{{item.Count}}></p>
@@ -34,7 +34,14 @@ export default {
     methods: {
         ...mapActions({
             getImage: 'image/getImage'
-        })
+        }),
+        goColor(){
+            let SerialID = this.$route.query.SerialID
+            this.$router.push({path:'/color',query:{SerialID}})
+        },
+        goType(){
+            this.$router.push({path:'/type'})
+        }
     },
     computed: {
         ...mapState({
@@ -42,7 +49,7 @@ export default {
         })  
     },
     created(){
-        console.log('....', this.$route.query.SerialID)
+        // console.log('....', this.$route.query.SerialID)
         this.getImage({
             SerialID: this.$route.query.SerialID
         });
@@ -117,6 +124,7 @@ export default {
                     img{
                         width: 100%;
                         height: 100%;
+                        background-size: cover;
                     }
                     div{
                         position: absolute;

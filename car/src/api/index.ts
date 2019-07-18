@@ -53,3 +53,12 @@ export function getImage(params:any){
         params
     })
 }
+
+// 获取颜色
+export function getColor(params:any){
+    return request({
+        url: 'v2-car-getModelImageYearColor.html',
+        method: 'get',
+        params
+    })
+}
