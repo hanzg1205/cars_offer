@@ -10,49 +10,88 @@
         </div>
         <div class="img-default" >
             <ul v-for="(item,index) in imgTypeList" :key="index">
-                <li v-for="(val,index) in item.List" :index="index" :key="val.Id">
-                    <img :style="{'backgroundImage': 'url('+val.Url.replace(/{\d}/,val.LowSize)+')'}">
-                    <div v-if="index===0">
+                <li v-for="(val,idx) in item.List" :idx="idx" :key="val.Id">
+                    <img :style="{'backgroundImage': 'url('+val.Url.replace(/{\d}/,val.LowSize)+')'}" @click="goSwiper(item.Id,idx)">
+                    <div v-if="idx===0" @click="showImgList(item.Id)">
                         <p>{{item.Name}}</p>
                         <p>{{item.Count}}></p>
                     </div>
                 </li>
             </ul>
         </div>
+        <ImgList v-if="imgFlag" :imgAllList="imgAllList" :goSwiper="goSwiper" :ImageID="ImageID"/>
+        <ImgSwiper v-if="SwiperFlag" :imgAllList="imgAllList" :imgIndex="imgIndex" :hideSwiper="hideSwiper"/>
     </div>
 </template>
 
 <script lang="ts">
 import { mapActions, mapState } from 'vuex';
+import ImgList from "@/components/ImgList.vue";
+import ImgSwiper from "@/components/ImgSwiper.vue";
 
 export default {
     data(){
         return {
-
+            imgFlag: false,
+            SwiperFlag: false,
+            SerialID: this.$route.query.SerialID,
+            imgIndex: 0,
+            ImageID: 0
         }
+    },
+    components: {
+        ImgList,
+        ImgSwiper
     },
     methods: {
         ...mapActions({
-            getImage: 'image/getImage'
+            getImage: 'image/getImage',
+            getCategoryImageList: 'image/getCategoryImageList'
         }),
         goColor(){
-            let SerialID = this.$route.query.SerialID
-            this.$router.push({path:'/color',query:{SerialID}})
+            this.$router.push({path:'/color',query:{SerialID:this.SerialID}})
         },
         goType(){
             this.$router.push({path:'/type'})
-        }
+        },
+        showImgList(ImageID:any){
+            // console.log(ImageID)
+            this.imgFlag = true;
+            this.ImageID = ImageID;
+            this.getImgList(ImageID);
+        },
+        goSwiper(ImageID:any,idx:any){
+            this.SwiperFlag = true;
+            this.getImgList(ImageID);
+            console.log("000000");
+            this.imgIndex = idx;
+            
+        },
+        getImgList(ImageID:any){
+            this.getCategoryImageList({
+                SerialID: this.SerialID,
+                ImageID: ImageID,
+                Page: 1,
+                PageSize: 30
+            })
+        },
+        hideSwiper(){
+            this.SwiperFlag = false; 
+        },
     },
     computed: {
         ...mapState({
-             imgTypeList: (state:any) => state.image.imgTypeList
+            imgTypeList: (state:any) => state.image.imgTypeList,
+            imgAllList: (state:any) => state.image.imgAllList
         })  
     },
     created(){
-        // console.log('....', this.$route.query.SerialID)
+        this.imgFlag = false;
+        console.log('..023..')
         this.getImage({
-            SerialID: this.$route.query.SerialID
+            SerialID: this.SerialID
         });
+        
     }
 }
 </script>
@@ -148,8 +187,7 @@ export default {
                         }
                     }
                 }
-            }
-            
+            }    
         }
     }
 </style>

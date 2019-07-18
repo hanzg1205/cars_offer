@@ -54,10 +54,19 @@ export function getImage(params:any){
     })
 }
 
-// 获取颜色
+// 获取颜色 
 export function getColor(params:any){
     return request({
         url: 'v2-car-getModelImageYearColor.html',
+        method: 'get',
+        params
+    })
+}
+
+// 获取某个类型下所有图片
+export function getCategoryImageList(params:any){
+    return request({
+        url: 'v2-car-getCategoryImageList.html',
         method: 'get',
         params
     })
