@@ -10,7 +10,7 @@
                     @click="tabFn(key,index)"
                 >{{key}}</span>
             </p>
-            <ul>
+            <ul v-if="typeList">
                 <li v-for="(item,index) in typeList" :key="index">
                     <span :style="{'background':item.Value}"></span>
                     {{item.Name}}
@@ -47,7 +47,11 @@ export default {
     created(){
         let SerialID = this.$route.query.SerialID
         this.getColor({SerialID});
-        this.typeList = this.colorList[Object.keys(this.colorList)[0]]
+    },
+    watch: {
+        colorList(val){
+            this.typeList = val[Object.keys(this.colorList)[0]];
+        }
     }
 }
 </script>
