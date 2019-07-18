@@ -9,27 +9,15 @@
           <p>{{DetailData.market_attribute.dealer_price}}</p>
           <span>指导价{{DetailData.market_attribute.official_refer_price}}</span>
         </div>
-        <li @click="goQuotation(getAllData[0].car_id)">询问低价</li>
+        <li @click="goQuotation(cid.car_id)">询问低价</li>
       </div>
       <div class="list">
         <p v-for="(item,index) in list" :key="index" @click="clcikIndex(index)" :class="index==ind?'active':''">{{item}}</p>
       </div>
-      <div class="list_item" v-for="(item,index) in getAllData" :key="index">
-        <p>{{item.exhaust_str}}\{{item.horse_power}}W {{item.inhale_type}}</p>
-        <div class="text_box">
-          <div class="text_top">
-            <p>{{item.market_attribute.year}}款 {{item.car_name}}</p>
-            <li>{{item.horse_power}}马力{{item.gear_num}}档{{item.trans_type}}</li>
-          </div>
-          <div class="text_bottom">
-            <p><span>指导价{{item.market_attribute.dealer_price_max}}</span><span class="pirce">{{item.market_attribute.dealer_price_min}}万</span></p>
-            <p class="buttom" @click="goQuotation(item.car_id)">询问低价</p>
-          </div>
-        </div>
-      </div>
+        <Item :data="getAllData" />
     </div>
-    <div class="fixed">
-      <p>询问低价</p>
+    <div class="fixed"  @click="goQuotation(cid.car_id)">
+      <p class="fixed_text">询问低价</p>
       <p>本地经销商为你报价</p>
     </div>
   </div>
@@ -37,6 +25,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { mapState , mapActions , mapMutations } from 'vuex'
+import Item from '@/components/item.vue'
 export default Vue.extend({
     data(){
       return {
@@ -47,7 +36,6 @@ export default Vue.extend({
       let { Adetail , indx } = this
        Adetail(this.$route.query.id)
        indx(this.ind)
-       console.log(this.DetailData)
     },
     methods:{
         ...mapActions({
@@ -72,8 +60,12 @@ export default Vue.extend({
       ...mapState({
         DetailData:(state:any)=>state.index.DetailData,
         list:(state:any)=>state.index.list,
-        getAllData:(state:any)=>state.index.getAllData
+        getAllData:(state:any)=>state.index.getAllData,
+        cid:(state:any)=>state.index.cid
       })
+    },
+    components:{
+      Item
     }
 })
 </script>
@@ -102,28 +94,31 @@ export default Vue.extend({
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: .4rem .15rem;
+      padding: .32rem .1rem;
       background: #fff;
-      p{
+         p{
         font-size: .2rem;
         color:#FF0000;
-      }
-      span{
-        color:#ccc;
-      }
+        font-weight:500;
+        }
+        span{
+          color:#ccc;
+          font-size: .08rem;
+        }
       li{
         width: 50%;
-        padding: .09rem;
+        padding: .1rem;
         background: #00afff;
         color:#fff;
         text-align: center;
         border-radius: .05rem;
+        font-size: .16rem
       }
     }
     .list{
-      border-top: .15rem solid #f4f4f4;
+      border-top: .08rem solid #f4f4f4;
       width: 100%;
-      font-size: .15rem;
+      font-size: .16rem;
       height: .57rem; 
       align-items: center;
       display: flex;
@@ -133,59 +128,22 @@ export default Vue.extend({
       }
     }
   }
-  .list_item{
+  .list_box{
     width: 100%;
     height: auto;
-    background: #fff;
-    p{
-      width: 100%;
-      background: #eee;
-      padding: .08rem;
-    }
-    .text_box{
-      width: 100%;
-      height: auto;
-      display: flex;
-      flex-direction: column;
-      padding: .1rem .1rem;
-      .text_top,.text_bottom{
-        p{
-          font-size: .15rem;
-          background: #fff;
-        }
-        .title{
-          color:#ccc;
-          list-style: none;
-        }
-      }
-      .text_bottom{
-        text-align: right;
-        .pirce{
-          color:#FF0000;
-          margin-left: .1rem;
-        }
-      }
-      .buttom{
-        width: 100%;
-        padding: .05rem 0;
-        text-align: center;
-        border-top:solid #ccc .01rem;
-        font-size: .18rem;
-        color:#00afff;
-      }
-    }
+    border-bottom:solid #ccc .5rem;
   }
   .fixed{
     width: 100%;
-    height: .6rem;
+    height: .5rem;
     background: #00afff;
     color:#fff;
     position: fixed;
     bottom:0;
-    left:0;
     text-align: center;
    :first-child{
      margin-top: .12rem;
+     font-size: .18rem;
    }
   }
 }

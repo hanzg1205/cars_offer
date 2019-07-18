@@ -6,7 +6,8 @@ const state={
     index:0,
     getAllData:[],
     brandList: {},
-    letterList: []
+    letterList: [],
+    cid:[]
 };
 const actions={
     async getBrandList({commit}:any,params:any){
@@ -28,7 +29,7 @@ const actions={
         commit('updateLetterList',keyData);
 
     },
-    async getList({commit}:any,action:any){
+    async getList({commit}:any,action:any){ 
         let data = await getData(action)
         commit('getListData',data)
     },
@@ -49,17 +50,50 @@ const mutations={
         state.listData=params
     },
     getIndex(state:any,payload:any){
-        console.log( state.DetailData)
         state.index=payload
+        if(state.index){
+            state.getAllData={list:[]}
+            state.DetailData.list.forEach((item:any)=>{
+               if(item.market_attribute.year==state.list[state.index]){
+                state.getAllData.list.push(item)
+               }
+            })
+        }else{
+            let obj:any={}
+            console.log(state.DetailData)
+            state.DetailData.list&&state.DetailData.list.forEach((item:any)=>{
+                let a = item.max_power_str||'其他';
+                if(obj[a]){
+                    obj[a].push(item)
+                }else{
+                    obj[a]=[item]
+                }
+             })
+            state.getAllData=obj
+            state.cid=state.getAllData
+        }
     },
     getDetailData(state:any,params:any){
         state.DetailData=params
+        let obj:any={}
         state.DetailData.list.forEach((item:any)=>{
+           state.list==1
             state.list.push(item.market_attribute.year)
             var arr=Array.from(new Set(state.list));
             state.list=arr
+            let a = item.max_power_str||'其他';
+            if(obj[a]){
+                obj[a].push(item)
+            }else{
+                obj[a]=[item]
+            }
         })
-        state.getAllData=state.DetailData.list
+        state.getAllData=obj
+        let arr=[]
+        for(let i in state.getAllData){
+            arr.push(state.getAllData[i][0])
+            state.cid=arr[0]
+        }
     },
 };
 export default{
@@ -68,4 +102,3 @@ export default{
     actions,
     mutations
 }
-

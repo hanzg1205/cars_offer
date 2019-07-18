@@ -17,11 +17,11 @@
                 <ul>
                     <li>
                         <span>姓名</span>
-                        <input type="text" placeholder="输入你的真实中文姓名" maxlength="4">
+                        <input type="text" placeholder="输入你的真实中文姓名" maxlength="4" v-model="name">
                     </li>
                     <li>
                         <span>手机</span>
-                        <input type="tel" placeholder="输入你的真实手机号码" maxlength="11">
+                        <input type="tel" placeholder="输入你的真实手机号码" maxlength="11" v-model="phone">
                     </li>
                     <li>
                         <span>城市</span>
@@ -29,11 +29,17 @@
                     </li>
                 </ul>
                 <div class="quotation-btn">
-                    <button>询最低价</button>
+                    <button @click="clcikSubmit">询最低价</button>
                 </div>
             </div>
             <DealerInfo :dealerList="dealerList"/>
             <Address v-if="addressFlag" :getAddress="getAddress"/>
+        </div>
+        <div class="alert" v-show="this.flag">
+            <div class="text_center">  
+                <p class="alert-title">{{this.val}}</p>
+                <p class="alert-ok" @click="clcikOk">好</p>
+            </div>
         </div>
     </div>
 </template>
@@ -47,7 +53,11 @@ export default Vue.extend({
     data(){
         return {
             addressFlag: false,
-            address: '北京'
+            address: '北京',
+            name:'',
+            phone:'',
+            val:'11111111111111111111',
+            flag:false
         }
     },
     components: {
@@ -73,6 +83,25 @@ export default Vue.extend({
                 carId: car_id,
                 cityId: params.CityID
             })
+        },
+        clcikSubmit(){
+            this.flag=true
+            if(this.name==''||this.phone==''){
+                this.val='请填写行姓名和电话号码'
+            }else{
+                let reg = /^[\u0391-\uFFE5A-Za-z]+$/;
+                let regNum = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
+                if (!reg.test(this.name)) {
+				   this.val='姓名请填写汉字'
+                }else if(!regNum.test(this.phone)){
+                    this.val='请填写正确的手机号码'
+                }else{
+                    this.val='成功'
+                }
+            }
+        },
+        clcikOk(){
+            this.flag=false
         }
     },
     computed: {
@@ -217,6 +246,51 @@ export default Vue.extend({
                         border-radius: .05rem;
                     }
                 }
+            }
+        }
+    }
+    .alert{
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top:0;
+        left:0;
+        background: rgba(32, 31, 31, 0.6);
+        .text_center{
+            position: fixed;
+            z-index: 9999;
+            background: #f6f6f6;
+            border-radius: 7px;
+            width: 72%;
+            left: 50%;
+            top: 50%;
+            height: 15%;
+            -webkit-transform: translate(-50%,-50%);
+            transform: translate(-50%,-50%);
+            -webkit-transform-origin: 50% 50%;
+            transform-origin: 50% 50%;
+            text-align: center;
+            font-size: 0;
+            .alert-title{
+                display: block;
+                margin: 0 auto;
+                padding: 0 0 20px;
+                height: .55rem;
+                max-width: 86%;
+                line-height: .55rem;
+                font-size: 13px;
+            }
+            .alert-ok{
+                position: relative;
+                display: block;
+                width: 100%;
+                padding: 14px 0;
+                border-radius: 0 0 7px 7px;
+                line-height: 16px;
+                border-top:solid #ccc .01rem;
+                font-size: 16px;
+                color: #007aff;
+                transition: background-color .1s;
             }
         }
     }
