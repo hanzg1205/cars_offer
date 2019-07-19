@@ -1,6 +1,6 @@
 <template>
     <div class="color">
-        <p>全部颜色</p>
+        <p @click="clcikColor('all')">全部颜色</p>
         <div class="color-box">
             <p class="c-type">
                 <span 
@@ -11,11 +11,13 @@
                 >{{key}}</span>
             </p>
             <ul v-if="typeList">
-                <li v-for="(item,index) in typeList" :key="index">
+                <li v-for="(item,index) in typeList" :key="index" @click="clcikColor(item,'items')">
                     <span :style="{'background':item.Value}"></span>
                     {{item.Name}}
                 </li>
             </ul>
+
+
         </div>
     </div>
 </template>
@@ -32,11 +34,21 @@ export default {
     },
     methods: {
         ...mapActions({
-            getColor: 'image/getColor'
+            getColor: 'image/getColor',
+            getColorItem:'image/getColorItem'
         }),
         tabFn(key:any,index:any){
             this.idx = index;
             this.typeList = this.colorList[key];
+        },
+        clcikColor(item:any,type:any){ 
+            let SerialID = this.$route.query.SerialID
+            this.$router.push({path:'/image',query:{SerialID}})
+            if(type=='items'){
+                this.getColorItem({color:item.ColorId,SerialID:this.$route.query.SerialID})
+            }else{
+                this.getColorItem({SerialID:this.$route.query.SerialID})
+            }
         }
     },
     computed: {

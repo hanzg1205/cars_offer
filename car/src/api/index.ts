@@ -71,3 +71,30 @@ export function getCategoryImageList(params:any){
         params
     })
 }
+export function getItem(params:any){
+    if(params.CarID&&params.SerialID){
+        return request({
+            url:`http://baojia.chelun.com/v2-car-getImageList.html?SerialID=${params.SerialID}&CarID=${params.CarID}&_1563455975168`,
+            method:'GET'
+        })
+    }else{
+        return request({
+            url:`http://baojia.chelun.com/v2-car-getImageList.html?SerialID=${params.SerialID}&_1563455975168`,
+            method:'GET'
+        })
+    }
+}
+
+export function getColorData(params:any){
+    if(params.color&&params.SerialID){
+        return request({
+            url:`http://baojia.chelun.com/v2-car-getImageList.html?SerialID=${params.SerialID}&ColorID=${params.color}&_1563466446099`,
+            method:'GET'
+        })
+    }else{
+        return request({
+            url:`http://baojia.chelun.com/v2-car-getImageList.html?SerialID=${params.SerialID}&_1563467528587`,
+            method:'GET'
+        })
+    }
+}

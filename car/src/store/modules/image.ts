@@ -1,4 +1,4 @@
-import { getImage, getColor, getCategoryImageList } from "@/api";
+import { getImage, getColor, getCategoryImageList, getItem , getColorData } from "@/api";
 const state={
     imgTypeList: [], // 图片列表
     colorList: [], // 颜色列表
@@ -22,6 +22,15 @@ const actions={
         let imgList = await getCategoryImageList(params);
         console.log('imgList...00',imgList);
         commit("updateImgList",imgList.data.List)
+    },
+    //点击车款
+    async getItemType({commit}:any,payload:any){
+        let data = await getItem(payload)
+        commit('updateImage',data.data)
+    },
+    async getColorItem({commit}:any,payload:any){
+        let data = await getColorData(payload)
+        commit('updateImage',data.data)
     }
 };
 const mutations={

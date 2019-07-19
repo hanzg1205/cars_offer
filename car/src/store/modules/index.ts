@@ -71,6 +71,7 @@ const mutations={
              })
             state.getAllData=obj
             state.cid=state.getAllData
+            console.log(state.cid)
         }
     },
     getDetailData(state:any,params:any){

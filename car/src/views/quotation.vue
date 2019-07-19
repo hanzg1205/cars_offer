@@ -89,7 +89,7 @@ export default Vue.extend({
             if(this.name==''||this.phone==''){
                 this.val='请填写行姓名和电话号码'
             }else{
-                let reg = /^[\u0391-\uFFE5A-Za-z]+$/;
+                let reg = /^[\u0391-\uFFE5]+$/;
                 let regNum = /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/;
                 if (!reg.test(this.name)) {
 				   this.val='姓名请填写汉字'

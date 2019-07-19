@@ -5,7 +5,7 @@
                 <span>颜色</span>
             </p>
             <p @click="goType">
-                <span>车款</span>
+                <span>{{car_name?car_name:data}}</span>
             </p>
         </div>
         <div class="img-default" >
@@ -21,6 +21,9 @@
         </div>
         <ImgList v-if="imgFlag" :imgAllList="imgAllList" :goSwiper="goSwiper" :ImageID="ImageID"/>
         <ImgSwiper v-if="SwiperFlag" :imgAllList="imgAllList" :imgIndex="imgIndex" :hideSwiper="hideSwiper"/>
+        <div class="img">
+            <img src="http://h5.chelun.com/2017/official/img/no-img.png" alt="">
+        </div>
     </div>
 </template>
 
@@ -36,7 +39,8 @@ export default {
             SwiperFlag: false,
             SerialID: this.$route.query.SerialID,
             imgIndex: 0,
-            ImageID: 0
+            ImageID: 0,
+            car_name:'车款'
         }
     },
     components: {
@@ -52,7 +56,7 @@ export default {
             this.$router.push({path:'/color',query:{SerialID:this.SerialID}})
         },
         goType(){
-            this.$router.push({path:'/type'})
+            this.$router.push({path:'/type',query:{SerialID:this.SerialID}})
         },
         showImgList(ImageID:any){
             // console.log(ImageID)
@@ -83,15 +87,21 @@ export default {
         ...mapState({
             imgTypeList: (state:any) => state.image.imgTypeList,
             imgAllList: (state:any) => state.image.imgAllList
-        })  
+        })  ,
+        data(){
+            let data = JSON.parse(sessionStorage.getItem('data'))
+            this.car_name=data.name
+        }
     },
     created(){
-        this.imgFlag = false;
-        console.log('..023..')
+        // this.imgFlag = false;
+        // console.log('..023..')
+        // let SerialID = this.$route.query.SerialID
+        // console.log(SerialID)
+        // this.$router.push({path:'/type',query:{SerialID}})
         this.getImage({
             SerialID: this.SerialID
-        });
-        
+        })
     }
 }
 </script>
@@ -189,5 +199,17 @@ export default {
                 }
             }    
         }
+        .img{
+            width:30%;
+            height: 20%;
+            margin: 0 auto;
+            line-height: 50%;
+            img{
+                width: 100%;
+                height: 100%;
+                margin-top: 50%;
+            }
+        }
     }
+        
 </style>
